@@ -1,0 +1,313 @@
+;
+;================================================================
+; GSD-File for DP/PN-coupler (EN)
+;================================================================
+;
+; History & Revision:
+;---------------------
+;
+; 16.04.2018 cb: V1.00 - Release (diagnostic off)
+;
+;
+; (c) Helmholz GmbH & Co. KG - Germany
+;================================================================
+
+#Profibus_DP
+
+;====================================================================
+; General DP Keywords 
+;====================================================================
+
+GSD_Revision=5
+Vendor_Name = "HELMHOLZ"
+Model_Name = "DP/PN-Coupler"
+Revision = "1.00"
+Ident_Number = 0x0FEB
+Protocol_Ident = 0
+Station_Type = 0
+FMS_supp = 0
+Hardware_Release = "HW1-1"
+Software_Release = "V1.00"
+Info_Text=" 700-158-3DP01 / DPV1 / V1.00 / 16.4.18 (EN) / HELM0FEB.GSE"
+Bitmap_Device="DPPN-C_N"
+Bitmap_SF="DPPN-C_S"
+Implementation_Type = "VPC3+"
+Slave_Family = 9@HELMHOLZ
+; OrderNumber=" 700-158-3DP01"	; Für Simatic-Manager, wird von manchen GSD-Tools nicht unterstützt
+ 
+Redundancy = 0
+Repeater_Ctrl_Sig = 2
+24V_Pins = 0
+
+;===================================================================
+; Supported baudrates 
+;===================================================================
+9.6_supp = 1
+19.2_supp = 1
+45.45_supp = 1
+93.75_supp = 1
+187.5_supp = 1
+500_supp = 1
+1.5M_supp = 1
+3M_supp = 1
+6M_supp = 1
+12M_supp = 1
+
+MaxTsdr_9.6=15
+MaxTsdr_19.2=15
+MaxTsdr_45.45=15
+MaxTsdr_93.75=15
+MaxTsdr_187.5=15
+MaxTsdr_500=15
+MaxTsdr_1.5M=20
+MaxTsdr_3M=35
+MaxTsdr_6M=50
+MaxTsdr_12M=95
+
+
+;=================================================================
+; Slave specific values 
+;=================================================================
+
+Set_Slave_Add_supp = 1 
+Freeze_Mode_supp = 1
+Sync_Mode_supp = 1
+Auto_Baud_supp = 1
+Fail_Safe = 1		    	        
+;Fail_Safe_required = 0
+
+Max_Output_Len = 244
+Max_Input_Len = 244
+Max_Data_Len = 488
+
+Min_Slave_Intervall = 1
+
+Max_Diag_Data_Len = 26
+
+Modular_Station = 1
+Max_Module = 16
+Modul_Offset = 1
+
+Ident_Maintenance_supp = 1
+DS248_FCT = 0xF111
+
+;=================================================================
+;     DPV1 KEY WORDS (copy from VPC3 demo GSD)
+;=================================================================
+
+DPV1_Slave                          = 1
+C1_Read_Write_supp                  = 1
+C1_Max_Data_Len                     = 240
+C1_Response_Timeout                 = 300
+Diagnostic_Alarm_supp               = 1
+Process_Alarm_supp                  = 0
+Alarm_Sequence_Mode_Count           = 16
+Alarm_Type_Mode_supp                = 1
+WD_Base_1ms_supp                    = 0		
+Publisher_supp                      = 1		
+
+C2_Read_Write_supp                  = 1
+C2_Max_Data_Len                     = 240
+C2_Response_Timeout                 = 300
+C2_Max_Count_Channels               = 3
+Max_Initiate_PDU_Length             = 52
+DPV1_Data_Types                     = 0
+
+
+;=================================================================
+; Unit-Diagnostics
+;=================================================================
+
+Unit_Diag_Area=24-31
+Value(1) ="Failure PS1 (left side)"
+Value(2) ="Failure PS2 (right side)"
+Unit_Diag_Area_End
+
+Unit_Diag_Area=32-39
+Value(1)="Error of other netside"
+Value(2)="Difference between netsides"
+Value(4)="No Input-data configured"
+Unit_Diag_Area_End
+
+Unit_Diag_Area=40-47
+Value(1) ="Data invalid"
+Unit_Diag_Area_End
+
+
+;=================================================================
+; <Prm-Text-Def-List>
+;=================================================================
+
+PrmText=1
+Text(0)="Off"
+Text(1)="On"
+EndPrmText
+
+
+;=================================================================
+; <Ext-User-Prm-Data-Def-List>
+;=================================================================
+
+ExtUserPrmData=1 "Data validity bit"
+Bit(0) 0 0-1
+Prm_Text_Ref=1
+EndExtUserPrmData
+
+ExtUserPrmData=2 "Diagnostic data validity"
+Bit(1) 0 0-1
+Prm_Text_Ref=1
+EndExtUserPrmData
+
+ExtUserPrmData=3 "Diagnostic PS1 failure"
+Bit(0) 0 0-1
+Prm_Text_Ref=1
+EndExtUserPrmData
+
+ExtUserPrmData=4 "Diagnostic PS2 failure"
+Bit(1) 0 0-1
+Prm_Text_Ref=1
+EndExtUserPrmData
+
+
+Max_User_Prm_Data_Len = 8 
+Ext_User_Prm_Data_Const(0) = 0x00,0x00,0x00 
+Ext_User_Prm_Data_Const(3) = 0x05,0x81,0x00,0x00,0x00 
+
+;Ext_User_Prm_Data_Ref(6) = 3
+;Ext_User_Prm_Data_Ref(6) = 4
+Ext_User_Prm_Data_Ref(7) = 1
+;Ext_User_Prm_Data_Ref(7) = 2
+
+
+
+;=================================================================
+; <Module-Definition-List>
+;=================================================================
+
+Module = "1 Byte Input" 0x10
+1
+EndModule
+
+Module = "2 Bytes Input" 0x11
+2
+EndModule
+
+Module = "4 Bytes Input" 0x13
+3
+EndModule
+
+Module = "8 Bytes Input" 0x17
+4
+EndModule
+
+Module = "16 Bytes Input" 0x1F
+5
+EndModule
+
+Module = "32 Bytes Input" 0x40,0x1F
+6
+EndModule
+
+Module = "64 Bytes Input" 0x40,0x3F
+7
+EndModule
+
+Module = "64 Words Input" 0x40,0x7F
+8
+EndModule
+
+Module = "1 Byte Output" 0x20
+10
+EndModule
+
+Module = "2 Bytes Output" 0x21
+11
+EndModule
+
+Module = "4 Bytes Output" 0x23
+12
+EndModule
+
+Module = "8 Bytes Output " 0x27
+13
+EndModule
+
+Module = "16 Bytes Output" 0x2F
+14
+EndModule
+
+Module = "32 Bytes Output" 0x80,0x1F
+15
+EndModule
+
+Module = "64 Bytes Output" 0x80,0x3F
+16
+EndModule
+
+Module = "64 Words Output" 0x80,0x7F
+17
+EndModule
+
+Module = "2 Bytes Input consistent" 0x91
+20
+EndModule
+
+Module = "4 Bytes Input consistent" 0x93
+21
+EndModule
+
+Module = "8 Bytes Input consistent" 0x97
+22
+EndModule
+
+Module = "16 Bytes Input consistent" 0x9F
+23
+EndModule
+
+Module = "32 Bytes Input consistent" 0x40,0x9F
+24
+EndModule
+
+Module = "64 Bytes Input consistent" 0x40,0xBF
+25
+EndModule
+
+Module = "64 Words Input consistent" 0x40,0xFF
+26
+EndModule
+
+Module = "2 Bytes Output consistent" 0xA1
+29
+EndModule
+
+Module = "4 Bytes Output consistent" 0xA3
+30
+EndModule
+
+Module = "8 Bytes Output consistent" 0xA7
+31
+EndModule
+
+Module = "16 Bytes Output consistent" 0xAF
+32
+EndModule
+
+Module = "32 Bytes Output consistent" 0x80,0x9F
+33
+EndModule
+
+Module = "64 Bytes Output consistent" 0x80,0xBF
+34
+EndModule
+
+Module = "64 Words Output consistent" 0x80,0xFF
+35
+EndModule
+
+Module = "6 Bytes I/12 Bytes O consistent" 0xC0,0x8B,0x85
+36
+EndModule
+
+Module = "12 Bytes I/6 Bytes O consistent" 0xC0,0x85,0x8B
+37
+EndModule
